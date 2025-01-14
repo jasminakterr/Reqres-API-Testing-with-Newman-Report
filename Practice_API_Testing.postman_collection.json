@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "e6d7c2dc-11f2-4478-ad65-a0e1e3f4f0c1",
+		"name": "Practice_API_Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39619519",
+		"_collection_link": "https://www.postman.com/ggh555/workspace/api-testing/collection/39619519-e6d7c2dc-11f2-4478-ad65-a0e1e3f4f0c1?action=share&source=collection_link&creator=39619519"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"\r",
+							"pm.environment.set(\"id\", jsonData.data[1].id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the status code is 200 \", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify the page value is 2\", function(){\r",
+							"    const jsonData = pm.response.json();\r",
+							"   pm.expect(jsonData.page).to.eql(2);\r",
+							"\r",
+							"  }) \r",
+							"\r",
+							"pm.test(\"Validate that all user data contains the fields id, email, first_name, last_name, and avatar\", function(){\r",
+							"    const jsonData = pm.response.json().data[0];\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('email');\r",
+							"    pm.expect(jsonData).to.have.property('first_name');\r",
+							"    pm.expect(jsonData).to.have.property('last_name');\r",
+							"    pm.expect(jsonData).to.have.property('avatar');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"   "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/users?page=2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"//Status Code Validation    \r",
+							"pm.test(\"Validate the status code is 201 \", function(){\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"\r",
+							"//Name & Job Validation\r",
+							"pm.test(\"Verify the name and job fields in the response match the request payload\", function(){\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"John Doe\");\r",
+							"    pm.expect(jsonData.job).to.eql(\"Software Engineer\");\r",
+							"});\r",
+							"\r",
+							"//ID & Create Date Validation\r",
+							"pm.test(\"Validate the presence of the id and createdAt fields in the response\", function(){\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('createdAt');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "id={{id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"job\": \"Software Engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"//Status Code Validation\r",
+							"    pm.test(\"Validate the status code is 200 \", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"//ID, Email, First Name, Last Name, Avatar Validation\r",
+							"pm.test(\"Validate that all user data contains the fields id, email, first_name, last_name, and avatar\", function(){\r",
+							"    const jsonData = pm.response.json().data;\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('email');\r",
+							"    pm.expect(jsonData).to.have.property('first_name');\r",
+							"    pm.expect(jsonData).to.have.property('last_name');\r",
+							"    pm.expect(jsonData).to.have.property('avatar');\r",
+							"});\r",
+							"\r",
+							"//URL & Text Validation\r",
+							"pm.test(\"Ensure the support section contains valid url and text fields\", function(){\r",
+							"    const jsonData = pm.response.json().support;\r",
+							"    pm.expect(jsonData).to.have.property('url');\r",
+							"    pm.expect(jsonData).to.have.property('text');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/users/8",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"//Status Code Validation\r",
+							"    pm.test(\"Validate the status code is 200 \", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"//Name & Job Validation\r",
+							"pm.test(\"Verify the name and job fields in the response match the request payload\", function(){\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"Jasmin Akter\");\r",
+							"    pm.expect(jsonData.job).to.eql(\"SQA Engineer\");\r",
+							"});\r",
+							"\r",
+							"//Update Date Validation\r",
+							"pm.test(\"Validate the presence of the id and createdAt fields in the response\", function(){\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property('updatedAt');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Jasmin Akter\",\r\n    \"job\": \"SQA Engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/users/4",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validate the status code is 204 \", function(){\r",
+							"    pm.response.to.have.status(204);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Ensure the response body is empty\", function () {\r",
+							"    pm.expect(pm.response.text()).to.equal(\"\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/users/4",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
