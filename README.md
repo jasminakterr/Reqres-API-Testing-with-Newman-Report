@@ -86,8 +86,9 @@ pm.test("Verify the page value is 2", function(){
     pm.expect(jsonData).to.have.property('last_name');
     pm.expect(jsonData).to.have.property('avatar');
 });
+```
 
- ## _**1. Create User**_
+### _**1. Create User**_
 ### Request URL: https://reqres.in/api/users
 ### Request Method: POST
 ### Request Body:
@@ -160,7 +161,7 @@ pm.test("Ensure the support section contains valid url and text fields", functio
 
 ```
 
- ## _**4. Update User**_
+ ### _**4. Update User**_
 ### Request URL: https://reqres.in/api/users/4
 ### Request Method: PUT
 ### Post-request Script:
